@@ -1,0 +1,112 @@
+
+//+------------------------------------------------------------------+
+//|                                            EA Liuk Trend Limited |
+//|                               Developer: Forex Robot Easy Team   |
+//|                                          Website: forexroboteasy.com |
+//+------------------------------------------------------------------+
+
+// Single-Entry Position System
+bool isEntryAllowed = true;
+
+// Support and Resistance Setting
+int supportResistancePeriod = 10; // Default period of 10 candles
+
+// Minimum Pip Range Setting
+int minimumPipRange = 20; // Default minimum range of 20 pips
+
+// Indicators
+int indicator1 = iMA(_Symbol, _Period, 14, 0, MODE_SMA, PRICE_CLOSE); // Example indicator 1
+int indicator2 = iRSI(_Symbol, _Period, 14); // Example indicator 2
+
+// Stop Loss & Take Profit
+double stopLossLevel = 50; // Default stop loss level of 50 pips
+double takeProfitLevel = 100; // Default take profit level of 100 pips
+
+//+------------------------------------------------------------------+
+//|                                                                  |
+//|                                                                  |
+//|                           TRADING FUNCTIONS                       |
+//|                                                                  |
+//|                                                                  |
+//+------------------------------------------------------------------+
+
+// Function to check if entry is allowed
+bool IsEntryAllowed()
+{
+    if(!isEntryAllowed)
+    {
+        Print('Entry is not allowed according to the single-entry position system.');
+        return false;
+    }
+    
+    return true;
+}
+
+// Function to check support and resistance level
+bool CheckSupportResistance()
+{
+    int supportResistanceCandles = iBars(_Symbol, _Period);
+    
+    if(supportResistanceCandles < supportResistancePeriod)
+    {
+        Print('Not enough candles to determine support and resistance period.');
+        return false;
+    }
+    
+    // Code to calculate support and resistance levels based on the specified period
+    
+    return true;
+}
+
+// Function to check minimum pip range
+bool CheckPipRange(double currentPrice, double entryPrice)
+{
+    double pipRange = MathAbs(currentPrice - entryPrice);
+    
+    if(pipRange < minimumPipRange)
+    {
+        Print('Pip range is below the minimum required range.');
+        return false;
+    }
+    
+    return true;
+}
+
+// Function to place a trade
+void PlaceTrade(double entryPrice)
+{
+    if(!IsEntryAllowed())
+        return;
+    
+    if(!CheckSupportResistance())
+        return;
+    
+    // Code to analyze market trends using the specified indicators
+    
+    double currentPrice = MarketInfo(_Symbol, MODE_BID);
+    
+    if(!CheckPipRange(currentPrice, entryPrice))
+        return;
+    
+    // Code to place the trade with the specified stop loss and take profit levels
+    // ...
+    
+    Print('Trade placed successfully.');
+}
+
+//+------------------------------------------------------------------+
+//|                                                                  |
+//|                                                                  |
+//|                          MAIN PROGRAM                            |
+//|                                                                  |
+//|                                                                  |
+//+------------------------------------------------------------------+
+
+void OnTick()
+{
+    // Entry point for the trading logic
+    
+    // Example usage of PlaceTrade function
+    double entryPrice = MarketInfo(_Symbol, MODE_ASK);
+    PlaceTrade(entryPrice);
+}
